@@ -1,27 +1,15 @@
 import { Preloader } from '@ui';
 import { FeedUI } from '@ui-pages';
-import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from '../../services/store';
-import { fetchFeeds } from '../../services/slices/feedSlice';
+import { TOrder } from '@utils-types';
+import { FC } from 'react';
 
 export const Feed: FC = () => {
-  const dispatch = useDispatch();
-  const { orders, isLoading } = useSelector((state) => state.feed);
+  /** TODO: взять переменную из стора */
+  const orders: TOrder[] = [];
 
-  // При первом открытии страницы загружаем заказы
-  useEffect(() => {
-    dispatch(fetchFeeds());
-  }, [dispatch]);
-
-  // Пока данные грузятся или если массив пустой — показываем лоадер
-  if (isLoading || !orders.length) {
+  if (!orders.length) {
     return <Preloader />;
   }
 
-  // Функция для кнопки «Обновить»
-  const handleGetFeeds = () => {
-    dispatch(fetchFeeds());
-  };
-
-  return <FeedUI orders={orders} handleGetFeeds={handleGetFeeds} />;
+  <FeedUI orders={orders} handleGetFeeds={() => {}} />;
 };

@@ -1,5 +1,6 @@
-import { FC, useState, SyntheticEvent, useEffect } from 'react';
+import { FC, SyntheticEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
 import { resetPasswordApi } from '@api';
 import { ResetPasswordUI } from '@ui-pages';
 
@@ -8,14 +9,6 @@ export const ResetPassword: FC = () => {
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState<Error | null>(null);
-
-  // Охранник: если юзер зашел сюда напрямую, не введя email на предыдущей странице,
-  // выкидываем его обратно на forgot-password
-  useEffect(() => {
-    if (!localStorage.getItem('resetPassword')) {
-      navigate('/forgot-password', { replace: true });
-    }
-  }, [navigate]);
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
@@ -28,12 +21,18 @@ export const ResetPassword: FC = () => {
       .catch((err) => setError(err));
   };
 
+  useEffect(() => {
+    if (!localStorage.getItem('resetPassword')) {
+      navigate('/forgot-password', { replace: true });
+    }
+  }, [navigate]);
+
   return (
     <ResetPasswordUI
       errorText={error?.message}
       password={password}
-      setPassword={setPassword}
       token={token}
+      setPassword={setPassword}
       setToken={setToken}
       handleSubmit={handleSubmit}
     />

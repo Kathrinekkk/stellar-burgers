@@ -10,8 +10,3 @@ declare module 'react' {
     onPointerLeaveCapture?: (e: React.PointerEvent<T>) => void;
   }
 }
-
-declare module '*.module.css' {
-  const classes: { [key: string]: string };
-  export default classes;
-}
