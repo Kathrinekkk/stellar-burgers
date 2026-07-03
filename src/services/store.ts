@@ -11,7 +11,6 @@ import orderReducer from './slices/orderSlice';
 import feedReducer from './slices/feedSlice';
 import historyReducer from './slices/historySlice';
 
-// Сюда будем добавлять новые редюсеры (например, для пользователя)
 const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   user: userReduser,

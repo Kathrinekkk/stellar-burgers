@@ -11,7 +11,6 @@ export const BurgerIngredient: FC<TBurgerIngredientProps> = memo(
     const location = useLocation();
     const dispatch = useDispatch();
 
-    // Функция, которая срабатывает при клике на кнопку "Добавить"
     const handleAdd = () => {
       dispatch(addIngredient(ingredient));
     };

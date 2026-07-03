@@ -1,14 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { orderBurgerApi } from '@api';
-import { TOrder } from '@utils-types'; // Возвращаем родной TOrder
+import { TOrder } from '@utils-types';
 
-// Указываем, что ждем TOrder
 export const placeOrder = createAsyncThunk<TOrder, string[]>(
   'order/placeOrder',
   async (data, { rejectWithValue }) => {
     try {
       const response = await orderBurgerApi(data);
-      // Магия TypeScript: принудительно говорим, что это TOrder
       return response.order as unknown as TOrder;
     } catch (error) {
       return rejectWithValue(error);
@@ -18,7 +16,7 @@ export const placeOrder = createAsyncThunk<TOrder, string[]>(
 
 type TOrderState = {
   orderRequest: boolean;
-  orderModalData: TOrder | null; // Возвращаем TOrder
+  orderModalData: TOrder | null;
   error: string | null;
 };
 

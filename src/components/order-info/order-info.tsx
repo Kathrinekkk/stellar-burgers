@@ -6,9 +6,8 @@ import { useSelector } from '../../services/store';
 import { useParams, useLocation } from 'react-router-dom';
 
 export const OrderInfo: FC = () => {
-  const { number } = useParams(); // Достаем номер из URL
+  const { number } = useParams();
   const { ingredients } = useSelector((state) => state.ingredients);
-  // Достаем заказы из обоих источников (лента и история)
   const feedOrders = useSelector((state) => state.feed.orders);
   const historyOrders = useSelector((state) => state.history.orders);
   const orderData = useMemo(
@@ -19,7 +18,6 @@ export const OrderInfo: FC = () => {
     [number, feedOrders, historyOrders]
   );
 
-  /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {
     if (!orderData || !ingredients.length) return null;
 
