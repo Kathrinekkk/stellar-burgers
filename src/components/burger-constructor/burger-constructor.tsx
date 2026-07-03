@@ -15,11 +15,9 @@ export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  // Достаем данные конструктора
   const constructorItems = useSelector(
     (state) => state.burgerConstructor
   ) as TConstructorItems;
-  // Достаем данные процесса заказа (лоадер и модалку)
   const { orderRequest, orderModalData } = useSelector((state) => state.order);
 
   const onOrderClick = () => {
@@ -29,14 +27,12 @@ export const BurgerConstructor: FC = () => {
       return;
     }
 
-    // Собираем массив ID для API: [булка, ...начинки, булка]
     const ingredientIds = [
       constructorItems.bun._id,
       ...constructorItems.ingredients.map((item) => item._id),
       constructorItems.bun._id
     ];
 
-    // Отправляем заказ и при успехе очищаем конструктор
     dispatch(placeOrder(ingredientIds))
       .unwrap()
       .then(() => {

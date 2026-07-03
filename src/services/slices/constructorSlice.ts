@@ -32,7 +32,6 @@ const constructorSlice = createSlice({
         (item) => item.id !== action.payload
       );
     },
-    // НОВЫЙ ЭКШЕН: Очистка конструктора после заказа
     clearConstructor: (state) => {
       state.bun = null;
       state.ingredients = [];

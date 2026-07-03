@@ -5,24 +5,20 @@ import { registerUser } from '../../services/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const Register: FC = () => {
-  // Локальные стейты для полей формы
+
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // Достаем ошибку из стора, если сервер нас отругает (например, юзер уже существует)
   const { error } = useSelector((state) => state.user);
 
-  // Функция, которая сработает при нажатии на кнопку «Зарегистрироваться»
   const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault(); // Останавливаем перезагрузку страницы браузером
-    // Диспатчим наш Thunk с данными из полей
+    e.preventDefault();
     dispatch(registerUser({ name: userName, email, password }))
-      .unwrap() // Позволяет поймать успешное выполнение
+      .unwrap()
       .then(() => {
-        // Если запрос прошел успешно — перекидываем на главную
         navigate('/');
       })
       .catch((err) => {

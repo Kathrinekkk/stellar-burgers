@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getIngredientsApi } from '@api';
-import { TIngredient } from '@utils-types'; // Импортируем тип ингредиента
+import { TIngredient } from '@utils-types';
 
 export const fetchIngredients = createAsyncThunk(
   'ingredients/fetchIngredients',
@@ -10,14 +10,12 @@ export const fetchIngredients = createAsyncThunk(
   }
 );
 
-// Описываем, как выглядит наш стейт
 type TIngredientsState = {
   ingredients: TIngredient[];
   isLoading: boolean;
   error: string | null;
 };
 
-// Передаем тип в initialState
 const initialState: TIngredientsState = {
   ingredients: [],
   isLoading: false,
@@ -36,7 +34,7 @@ const ingredientsSlice = createSlice({
       })
       .addCase(fetchIngredients.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.ingredients = action.payload; // Теперь TS знает, что мы кладем сюда TIngredient[]
+        state.ingredients = action.payload;
       })
       .addCase(fetchIngredients.rejected, (state, action) => {
         state.isLoading = false;

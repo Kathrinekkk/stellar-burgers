@@ -9,8 +9,6 @@ export const ResetPassword: FC = () => {
   const [token, setToken] = useState('');
   const [error, setError] = useState<Error | null>(null);
 
-  // Охранник: если юзер зашел сюда напрямую, не введя email на предыдущей странице,
-  // выкидываем его обратно на forgot-password
   useEffect(() => {
     if (!localStorage.getItem('resetPassword')) {
       navigate('/forgot-password', { replace: true });

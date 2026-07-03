@@ -2,13 +2,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getFeedsApi } from '@api';
 import { TOrder } from '@utils-types';
 
-// Thunk для получения всех заказов
 export const fetchFeeds = createAsyncThunk(
   'feed/fetchFeeds',
   async (_, { rejectWithValue }) => {
     try {
       const response = await getFeedsApi();
-      return response; // возвращает { success, orders, total, totalToday }
+      return response;
     } catch (error) {
       return rejectWithValue(error);
     }

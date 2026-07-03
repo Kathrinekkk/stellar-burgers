@@ -10,11 +10,9 @@ export const ProfileMenu: FC = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Вызываем Thunk выхода
     dispatch(logoutUser())
       .unwrap()
       .then(() => {
-        // После успешного выхода перекидываем юзера на страницу логина
         navigate('/login');
       });
   };

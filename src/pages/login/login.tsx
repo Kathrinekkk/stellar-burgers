@@ -18,7 +18,6 @@ export const Login: FC = () => {
     dispatch(loginUser({ email, password }))
       .unwrap()
       .then(() => {
-        // Перекидываем туда, откуда юзер пришел, или на главную
         const from = location.state?.from?.pathname || '/';
         navigate(from);
       })

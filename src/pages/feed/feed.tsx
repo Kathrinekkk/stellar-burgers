@@ -8,17 +8,14 @@ export const Feed: FC = () => {
   const dispatch = useDispatch();
   const { orders, isLoading } = useSelector((state) => state.feed);
 
-  // При первом открытии страницы загружаем заказы
   useEffect(() => {
     dispatch(fetchFeeds());
   }, [dispatch]);
 
-  // Пока данные грузятся или если массив пустой — показываем лоадер
   if (isLoading || !orders.length) {
     return <Preloader />;
   }
 
-  // Функция для кнопки «Обновить»
   const handleGetFeeds = () => {
     dispatch(fetchFeeds());
   };

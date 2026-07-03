@@ -26,16 +26,12 @@ const App = () => {
   const dispatch = useDispatch();
   const background = location.state?.background;
 
-  // Достаем реальные данные из Redux-стора
   const { ingredients, isLoading, error } = useSelector(
     (state) => state.ingredients
   );
-  // Делаем запрос к API при первой загрузке приложения
   useEffect(() => {
-    // Загружаем ингредиенты
     dispatch(fetchIngredients());
 
-    // Делаем реальный запрос к серверу для проверки юзера по токену
     dispatch(checkUserAuth());
   }, [dispatch]);
 

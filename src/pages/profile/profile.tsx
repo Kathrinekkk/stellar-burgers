@@ -5,17 +5,14 @@ import { updateUser } from '../../services/slices/userSlice';
 
 export const Profile: FC = () => {
   const dispatch = useDispatch();
-  // Достаем данные юзера из стора
   const user = useSelector((state) => state.user.user);
 
-  // Локальный стейт формы (изначально берем данные из юзера)
   const [formValue, setFormValue] = useState({
     name: user?.name || '',
     email: user?.email || '',
     password: ''
   });
 
-  // Если данные юзера загрузились/обновились в Redux, синхронизируем с ними форму
   useEffect(() => {
     setFormValue((prevState) => ({
       ...prevState,
@@ -24,7 +21,6 @@ export const Profile: FC = () => {
     }));
   }, [user]);
 
-  // Проверяем, изменил ли пользователь хоть что-то
   const isFormChanged =
     formValue.name !== user?.name ||
     formValue.email !== user?.email ||
@@ -32,13 +28,11 @@ export const Profile: FC = () => {
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
-    // Отправляем обновленные данные на сервер
     dispatch(updateUser(formValue));
   };
 
   const handleCancel = (e: SyntheticEvent) => {
-    e.preventDefault();
-    // Возвращаем форму в исходное состояние
+    e.preventDefault()
     setFormValue({
       name: user?.name || '',
       email: user?.email || '',

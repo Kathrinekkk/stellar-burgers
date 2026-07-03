@@ -3,13 +3,11 @@ import { useInView } from 'react-intersection-observer';
 
 import { TTabMode } from '@utils-types';
 import { BurgerIngredientsUI } from '../ui/burger-ingredients';
-import { useSelector } from '../../services/store'; // Подключаем хук для Redux
+import { useSelector } from '../../services/store';
 
 export const BurgerIngredients: FC = () => {
-  // Достаем массив всех ингредиентов из Redux-стора
   const { ingredients } = useSelector((state) => state.ingredients);
 
-  // Фильтруем ингредиенты по категориям
   const buns = ingredients.filter((item) => item.type === 'bun');
   const mains = ingredients.filter((item) => item.type === 'main');
   const sauces = ingredients.filter((item) => item.type === 'sauce');
