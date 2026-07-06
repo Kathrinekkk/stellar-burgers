@@ -6,18 +6,13 @@ import { useDispatch, useSelector } from '../../services/store';
 import { clearConstructor } from '../../services/slices/constructorSlice';
 import { placeOrder, clearOrderModal } from '../../services/slices/orderSlice';
 
-type TConstructorItems = {
-  bun: TConstructorIngredient | null;
-  ingredients: TConstructorIngredient[];
-};
-
 export const BurgerConstructor: FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const constructorItems = useSelector(
-    (state) => state.burgerConstructor
-  ) as TConstructorItems;
+
+  const constructorItems = useSelector((state) => state.burgerConstructor);
+
   const { orderRequest, orderModalData } = useSelector((state) => state.order);
 
   const onOrderClick = () => {

@@ -1,5 +1,11 @@
 import { useEffect } from 'react';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  useMatch
+} from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { fetchIngredients } from '../../services/slices/ingredientsSlice';
 import { checkUserAuth } from '../../services/slices/userSlice';
@@ -26,16 +32,16 @@ const App = () => {
   const dispatch = useDispatch();
   const background = location.state?.background;
 
-  // Достаем реальные данные из Redux-стора
+  const profileMatch = useMatch('/profile/orders/:number')?.params.number;
+  const feedMatch = useMatch('/feed/:number')?.params.number;
+  const orderNumber = profileMatch || feedMatch;
+
   const { ingredients, isLoading, error } = useSelector(
     (state) => state.ingredients
   );
-  // Делаем запрос к API при первой загрузке приложения
-  useEffect(() => {
-    // Загружаем ингредиенты
-    dispatch(fetchIngredients());
 
-    // Делаем реальный запрос к серверу для проверки юзера по токену
+  useEffect(() => {
+    dispatch(fetchIngredients());
     dispatch(checkUserAuth());
   }, [dispatch]);
 
@@ -54,6 +60,15 @@ const App = () => {
             {/* Публичные маршруты */}
             <Route path='/' element={<ConstructorPage />} />
             <Route path='/feed' element={<Feed />} />
+
+            {/* Маршруты для прямых ссылок (когда нет модального окна) */}
+            <Route path='/feed/:number' element={<OrderInfo />} />
+            <Route path='/ingredients/:id' element={<IngredientDetails />} />
+            <Route
+              path='/profile/orders/:number'
+              element={<ProtectedRoute element={<OrderInfo />} />}
+            />
+
             {/* Маршруты только для НЕавторизованных */}
             <Route
               path='/login'
@@ -75,6 +90,7 @@ const App = () => {
                 <ProtectedRoute onlyUnAuth element={<ResetPassword />} />
               }
             />
+
             {/* Защищенные маршруты (только для авторизованных) */}
             <Route
               path='/profile'
@@ -84,6 +100,7 @@ const App = () => {
               path='/profile/orders'
               element={<ProtectedRoute element={<ProfileOrders />} />}
             />
+            {/* Страница не найдена */}
             <Route path='*' element={<NotFound404 />} />
           </Routes>
 
@@ -93,13 +110,20 @@ const App = () => {
               <Route
                 path='/feed/:number'
                 element={
-                  <Modal title='Детали заказа' onClose={() => navigate(-1)}>
+                  <Modal
+                    title={
+                      orderNumber
+                        ? `#${orderNumber.padStart(6, '0')}`
+                        : 'Детали заказа'
+                    }
+                    onClose={() => navigate(-1)}
+                  >
                     <OrderInfo />
                   </Modal>
                 }
               />
               <Route
-                path='/ingredients/:id'
+                path='ingredients/:id'
                 element={
                   <Modal
                     title='Детали ингредиента'
@@ -114,7 +138,14 @@ const App = () => {
                 element={
                   <ProtectedRoute
                     element={
-                      <Modal title='Детали заказа' onClose={() => navigate(-1)}>
+                      <Modal
+                        title={
+                          orderNumber
+                            ? `#${orderNumber.padStart(6, '0')}`
+                            : 'Детали заказа'
+                        }
+                        onClose={() => navigate(-1)}
+                      >
                         <OrderInfo />
                       </Modal>
                     }

@@ -16,6 +16,8 @@ export const registerUser = createAsyncThunk(
   async (data: TRegisterData, { rejectWithValue }) => {
     try {
       const response = await registerUserApi(data);
+      localStorage.setItem('refreshToken', response.refreshToken);
+      setCookie('accessToken', response.accessToken);
       return response.user;
     } catch (error) {
       return rejectWithValue(error);
@@ -104,6 +106,7 @@ const userSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.user = action.payload;
+        state.isAuthChecked = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.error = action.error.message || 'Ошибка регистрации';
@@ -147,3 +150,4 @@ const userSlice = createSlice({
 
 export const { authCheck, userLogout } = userSlice.actions;
 export default userSlice.reducer;
+userSlice;
