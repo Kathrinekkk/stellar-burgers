@@ -4,6 +4,6 @@ export default defineConfig({
   testMatch: '**/*.pl.tsx',
   
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:4000',
   },
 });
