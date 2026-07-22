@@ -8,9 +8,42 @@ test.describe('E2E тесты: Конструктор бургера и офор
       document.cookie = "refreshToken=mock-refresh-token; path=/";
     });
 
-    await page.routeFromHAR('tests/hars/ingredients.har', { url: '**/api/ingredients', update: false });
-    await page.routeFromHAR('tests/hars/user.har', { url: '**/api/auth/user', update: false });
-    await page.routeFromHAR('tests/hars/order.har', { url: '**/api/orders', update: false });
+    await page.route('**/api/**', async (route) => {
+      const request = route.request();
+      
+      if (request.method() === 'OPTIONS') {
+        return route.fulfill({
+          status: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': '*'
+          }
+        });
+      }
+      
+      if (request.url().includes('/auth/user')) {
+        return route.fulfill({ 
+          status: 200, 
+          contentType: 'application/json', 
+          body: JSON.stringify({ success: true, user: { name: 'Test User', email: 'test@yandex.ru' } }) 
+        });
+      }
+      
+      if (request.url().includes('/orders')) {
+        return route.fulfill({ 
+          status: 200, 
+          contentType: 'application/json', 
+          body: JSON.stringify({ success: true, name: 'Space Краторный бургер', order: { number: 424242 } }) 
+        });
+      }
+
+      route.fallback();
+    });
+
+    await page.routeFromHAR('tests/hars/ingredients.har', { url: '**/api/ingredients', update: false, notFound: 'fallback' });
+    await page.routeFromHAR('tests/hars/user.har', { url: '**/api/auth/user', update: false, notFound: 'fallback' });
+    await page.routeFromHAR('tests/hars/order.har', { url: '**/api/orders', update: false, notFound: 'fallback' });
 
     await page.goto('/');
   });
